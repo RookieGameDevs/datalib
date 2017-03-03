@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MIN_SIZE 32
 #define LOAD_FACTOR_LIMIT 0.5
 
 // defined in murmurhash.c
@@ -43,12 +44,32 @@ str_cmp(const void *a, const void *b)
 	return strcmp(a, b);
 }
 
+uint32_t
+int_hash(const void *key)
+{
+	return (uint32_t)key;
+}
+
+int
+int_cmp(const void *a, const void *b)
+{
+	if (a < b) {
+		return -1;
+	} else if (a == b) {
+		return 0;
+	}
+	return 1;
+}
+
 struct HashTable*
 hashtable_new(HashFunc hash, CompareFunc cmp, size_t initial_size)
 {
 	assert(hash != NULL);
 	assert(cmp != NULL);
-	assert(initial_size > 0);
+
+	// start with a meaningful initial size, in order to avoid unnecessary
+	// reallocations when table is small
+	initial_size = initial_size < MIN_SIZE ? MIN_SIZE : initial_size;
 
 	struct HashTable *ht = malloc(sizeof(struct HashTable));
 	if (!ht) {
@@ -180,6 +201,14 @@ hashtable_len(struct HashTable *ht)
 	assert(ht != NULL);
 
 	return ht->len;
+}
+
+size_t
+hashtable_size(struct HashTable *ht)
+{
+	assert(ht != NULL);
+
+	return ht->size;
 }
 
 void

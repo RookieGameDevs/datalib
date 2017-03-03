@@ -1,12 +1,13 @@
 #include "hashtable.h"
 #include <check.h>
+#include <stdlib.h>
 
 #define int_to_ptr(i) ((void*)(unsigned long long)i)
 #define ptr_to_int(p) ((int)(unsigned long long)p)
 
-START_TEST(test_hashtable_string)
+START_TEST(test_hashtable_simple)
 {
-	struct HashTable *ht = hashtable_new(str_hash, str_cmp, 8);
+	struct HashTable *ht = hashtable_new(str_hash, str_cmp, 0);
 	ck_assert(ht != NULL);
 
 	ck_assert(hashtable_set(ht, "hello", int_to_ptr(1234)));
@@ -31,13 +32,41 @@ START_TEST(test_hashtable_string)
 }
 END_TEST
 
+START_TEST(test_hashtable_grow)
+{
+	struct HashTable *ht = hashtable_new(int_hash, int_cmp, 0);
+	ck_assert(ht != NULL);
+
+	size_t n_insertions = 1e5;
+	const void *keys[n_insertions];
+
+	for (int i = 0; i < n_insertions; i++) {
+		const void *key = int_to_ptr(rand());
+		if (!hashtable_get(ht, key)) {
+			ck_assert(hashtable_set(ht, key, int_to_ptr(1)));
+			keys[i] = key;
+		}
+	}
+
+	ck_assert_uint_eq(hashtable_len(ht), n_insertions);
+	ck_assert_uint_lt(hashtable_len(ht), hashtable_size(ht));
+
+	for (int i = 0; i < n_insertions; i++) {
+		ck_assert(hashtable_get(ht, keys[i]));
+	}
+
+	hashtable_free(ht);
+}
+END_TEST
+
 Suite*
 hashtable_suite(void)
 {
 	Suite *s = suite_create("hashtable");
 
 	TCase *tc_core = tcase_create("core");
-	tcase_add_test(tc_core, test_hashtable_string);
+	tcase_add_test(tc_core, test_hashtable_simple);
+	tcase_add_test(tc_core, test_hashtable_grow);
 	suite_add_tcase(s, tc_core);
 
 	return s;
