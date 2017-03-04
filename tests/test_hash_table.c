@@ -34,7 +34,7 @@ END_TEST
 
 START_TEST(test_hash_table_grow)
 {
-	struct HashTable *ht = hash_table_new(int_hash, int_cmp, 0);
+	struct HashTable *ht = hash_table_new(ptr_hash, ptr_cmp, 0);
 	ck_assert(ht != NULL);
 
 	size_t n_insertions = 1e5;
@@ -61,7 +61,7 @@ END_TEST
 
 START_TEST(test_hash_table_iter)
 {
-	struct HashTable *ht = hash_table_new(int_hash, int_cmp, 0);
+	struct HashTable *ht = hash_table_new(ptr_hash, ptr_cmp, 0);
 	ck_assert(ht != NULL);
 
 	size_t items = 100;
@@ -82,7 +82,7 @@ START_TEST(test_hash_table_iter)
 	while (hash_table_iter_next(&it, &key, NULL)) {
 		int found = 0;
 		for (size_t i = 0; i < items; i++) {
-			if (int_cmp(key, keys[i]) == 0) {
+			if (ptr_cmp(key, keys[i]) == 0) {
 				found = 1;
 				keys[i] = NULL;
 				break;

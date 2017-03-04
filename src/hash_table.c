@@ -45,13 +45,13 @@ str_cmp(const void *a, const void *b)
 }
 
 uint32_t
-int_hash(const void *key)
+ptr_hash(const void *key)
 {
 	return (uint32_t)key;
 }
 
 int
-int_cmp(const void *a, const void *b)
+ptr_cmp(const void *a, const void *b)
 {
 	if (a < b) {
 		return -1;

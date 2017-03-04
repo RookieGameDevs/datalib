@@ -20,10 +20,10 @@ int
 str_cmp(const void *a, const void *b);
 
 uint32_t
-int_hash(const void *key);
+ptr_hash(const void *key);
 
 int
-int_cmp(const void *a, const void *b);
+ptr_cmp(const void *a, const void *b);
 
 struct HashTable*
 hash_table_new(HashFunc hash, CompareFunc cmp, size_t initial_size);
