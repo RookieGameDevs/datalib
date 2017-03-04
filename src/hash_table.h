@@ -26,28 +26,28 @@ int
 int_cmp(const void *a, const void *b);
 
 struct HashTable*
-hashtable_new(HashFunc hash, CompareFunc cmp, size_t initial_size);
+hash_table_new(HashFunc hash, CompareFunc cmp, size_t initial_size);
 
 int
-hashtable_set(struct HashTable *ht, const void *key, void *value);
+hash_table_set(struct HashTable *ht, const void *key, void *value);
 
 void*
-hashtable_get(struct HashTable *ht, const void *key);
+hash_table_get(struct HashTable *ht, const void *key);
 
 void*
-hashtable_pop(struct HashTable *ht, const void *key);
+hash_table_pop(struct HashTable *ht, const void *key);
 
 size_t
-hashtable_len(struct HashTable *ht);
+hash_table_len(struct HashTable *ht);
 
 size_t
-hashtable_size(struct HashTable *ht);
+hash_table_size(struct HashTable *ht);
 
 void
-hashtable_iter_init(struct HashTable *ht, struct HashTableIter *it);
+hash_table_iter_init(struct HashTable *ht, struct HashTableIter *it);
 
 int
 hash_table_iter_next(struct HashTableIter *it, const void **k, void **v);
 
 void
-hashtable_free(struct HashTable *ht);
+hash_table_free(struct HashTable *ht);

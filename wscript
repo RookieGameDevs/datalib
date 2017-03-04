@@ -51,4 +51,4 @@ def build(bld):
         install_path=None,
         source=bld.path.ant_glob('tests/**/*.c'))
 
-    bld.install_files('${PREFIX}/include/datalib/', ['src/hashtable.h'])
+    bld.install_files('${PREFIX}/include/datalib/', ['src/hash_table.h'])

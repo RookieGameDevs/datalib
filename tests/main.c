@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 Suite*
-hashtable_suite(void);
+hash_table_suite(void);
 
 int
 main(int argc, char *argv[])
@@ -12,7 +12,7 @@ main(int argc, char *argv[])
 	SRunner *sr = srunner_create(s);
 
 	// add external suites
-	srunner_add_suite(sr, hashtable_suite());
+	srunner_add_suite(sr, hash_table_suite());
 
 	// execute all suites
 	srunner_run_all(sr, CK_NORMAL);

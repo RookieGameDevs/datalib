@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "hash_table.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,7 +62,7 @@ int_cmp(const void *a, const void *b)
 }
 
 struct HashTable*
-hashtable_new(HashFunc hash, CompareFunc cmp, size_t initial_size)
+hash_table_new(HashFunc hash, CompareFunc cmp, size_t initial_size)
 {
 	assert(hash != NULL);
 	assert(cmp != NULL);
@@ -90,7 +90,7 @@ hashtable_new(HashFunc hash, CompareFunc cmp, size_t initial_size)
 }
 
 static int
-hashtable_resize(struct HashTable *ht, size_t newsize)
+hash_table_resize(struct HashTable *ht, size_t newsize)
 {
 	assert(ht->size < newsize);
 
@@ -119,12 +119,12 @@ hashtable_resize(struct HashTable *ht, size_t newsize)
 }
 
 int
-hashtable_set(struct HashTable *ht, const void *key, void *value)
+hash_table_set(struct HashTable *ht, const void *key, void *value)
 {
 	assert(ht != NULL);
 
 	if (ht->len / (float)ht->size > LOAD_FACTOR_LIMIT &&
-	    !hashtable_resize(ht, ht->size * 2)) {
+	    !hash_table_resize(ht, ht->size * 2)) {
 		return 0;
 	}
 
@@ -149,7 +149,7 @@ hashtable_set(struct HashTable *ht, const void *key, void *value)
 }
 
 void*
-hashtable_get(struct HashTable *ht, const void *key)
+hash_table_get(struct HashTable *ht, const void *key)
 {
 	assert(ht != NULL);
 
@@ -168,7 +168,7 @@ hashtable_get(struct HashTable *ht, const void *key)
 }
 
 void*
-hashtable_pop(struct HashTable *ht, const void *key)
+hash_table_pop(struct HashTable *ht, const void *key)
 {
 	assert(ht != NULL);
 
@@ -197,7 +197,7 @@ hashtable_pop(struct HashTable *ht, const void *key)
 }
 
 size_t
-hashtable_len(struct HashTable *ht)
+hash_table_len(struct HashTable *ht)
 {
 	assert(ht != NULL);
 
@@ -205,7 +205,7 @@ hashtable_len(struct HashTable *ht)
 }
 
 size_t
-hashtable_size(struct HashTable *ht)
+hash_table_size(struct HashTable *ht)
 {
 	assert(ht != NULL);
 
@@ -213,7 +213,7 @@ hashtable_size(struct HashTable *ht)
 }
 
 void
-hashtable_iter_init(struct HashTable *ht, struct HashTableIter *it)
+hash_table_iter_init(struct HashTable *ht, struct HashTableIter *it)
 {
 	assert(ht != NULL);
 	assert(it != NULL);
@@ -247,7 +247,7 @@ hash_table_iter_next(struct HashTableIter *it, const void **k, void **v)
 }
 
 void
-hashtable_free(struct HashTable *ht)
+hash_table_free(struct HashTable *ht)
 {
 	free(ht->table);
 	free(ht);
