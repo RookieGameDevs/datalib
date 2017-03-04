@@ -212,6 +212,40 @@ hashtable_size(struct HashTable *ht)
 }
 
 void
+hashtable_iter_init(struct HashTable *ht, struct HashTableIter *it)
+{
+	assert(ht != NULL);
+	assert(it != NULL);
+
+	it->ht = ht;
+	it->cur = 0;
+}
+
+int
+hash_table_iter_next(struct HashTableIter *it, const void **k, void **v)
+{
+	assert(it != NULL);
+
+	while (!it->ht->table[it->cur].used && it->cur < it->ht->size) {
+		it->cur++;
+	}
+
+	if (it->cur < it->ht->size) {
+		struct Entry ent = it->ht->table[it->cur];
+		if (k) {
+			*k = ent.key;
+		}
+		if (v) {
+			*v = ent.value;
+		}
+		it->cur++;
+		return 1;
+	}
+
+	return 0;
+}
+
+void
 hashtable_free(struct HashTable *ht)
 {
 	free(ht);

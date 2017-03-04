@@ -5,6 +5,11 @@
 
 struct HashTable;
 
+struct HashTableIter {
+	struct HashTable *ht;
+	size_t cur;
+};
+
 typedef uint32_t (*HashFunc)(const void *key);
 typedef int (*CompareFunc)(const void *a, const void *b);
 
@@ -37,6 +42,12 @@ hashtable_len(struct HashTable *ht);
 
 size_t
 hashtable_size(struct HashTable *ht);
+
+void
+hashtable_iter_init(struct HashTable *ht, struct HashTableIter *it);
+
+int
+hash_table_iter_next(struct HashTableIter *it, const void **k, void **v);
 
 void
 hashtable_free(struct HashTable *ht);

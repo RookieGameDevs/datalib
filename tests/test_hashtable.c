@@ -59,6 +59,44 @@ START_TEST(test_hashtable_grow)
 }
 END_TEST
 
+START_TEST(test_hashtable_iter)
+{
+	struct HashTable *ht = hashtable_new(int_hash, int_cmp, 0);
+	ck_assert(ht != NULL);
+
+	size_t items = 100;
+	const void *keys[items];
+
+	for (int i = 0; i < items; i++) {
+		const void *key = int_to_ptr(rand());
+		if (!hashtable_get(ht, key)) {
+			ck_assert(hashtable_set(ht, key, int_to_ptr(1)));
+			keys[i] = key;
+		}
+	}
+
+	struct HashTableIter it;
+	hashtable_iter_init(ht, &it);
+	const void *key = NULL;
+	size_t iterations = 0;
+	while (hash_table_iter_next(&it, &key, NULL)) {
+		int found = 0;
+		for (size_t i = 0; i < items; i++) {
+			if (int_cmp(key, keys[i]) == 0) {
+				found = 1;
+				keys[i] = NULL;
+				break;
+			}
+		}
+		ck_assert(found);
+		iterations++;
+	}
+	ck_assert_uint_eq(items, iterations);
+
+	hashtable_free(ht);
+}
+END_TEST
+
 Suite*
 hashtable_suite(void)
 {
@@ -67,6 +105,7 @@ hashtable_suite(void)
 	TCase *tc_core = tcase_create("core");
 	tcase_add_test(tc_core, test_hashtable_simple);
 	tcase_add_test(tc_core, test_hashtable_grow);
+	tcase_add_test(tc_core, test_hashtable_iter);
 	suite_add_tcase(s, tc_core);
 
 	return s;
