@@ -110,6 +110,7 @@ hashtable_resize(struct HashTable *ht, size_t newsize)
 			newtable[j] = ht->table[i];
 		}
 	}
+
 	free(ht->table);
 	ht->table = newtable;
 	ht->size = newsize;
@@ -248,5 +249,6 @@ hash_table_iter_next(struct HashTableIter *it, const void **k, void **v)
 void
 hashtable_free(struct HashTable *ht)
 {
+	free(ht->table);
 	free(ht);
 }
