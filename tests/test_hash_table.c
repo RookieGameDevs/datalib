@@ -41,11 +41,10 @@ START_TEST(test_hash_table_grow)
 	const void *keys[n_insertions];
 
 	for (int i = 0; i < n_insertions; i++) {
-		const void *key = int_to_ptr(rand());
-		if (!hash_table_get(ht, key)) {
-			ck_assert(hash_table_set(ht, key, int_to_ptr(1)));
-			keys[i] = key;
-		}
+		const void *key;
+		while (hash_table_get(ht, (key = int_to_ptr(rand()))));
+		ck_assert(hash_table_set(ht, key, int_to_ptr(1)));
+		keys[i] = key;
 	}
 
 	ck_assert_uint_eq(hash_table_len(ht), n_insertions);
@@ -68,11 +67,10 @@ START_TEST(test_hash_table_iter)
 	const void *keys[items];
 
 	for (int i = 0; i < items; i++) {
-		const void *key = int_to_ptr(rand());
-		if (!hash_table_get(ht, key)) {
-			ck_assert(hash_table_set(ht, key, int_to_ptr(1)));
-			keys[i] = key;
-		}
+		const void *key;
+		while (hash_table_get(ht, (key = int_to_ptr(rand()))));
+		ck_assert(hash_table_set(ht, key, int_to_ptr(1)));
+		keys[i] = key;
 	}
 
 	struct HashTableIter it;
