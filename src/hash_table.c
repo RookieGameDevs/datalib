@@ -47,7 +47,7 @@ str_cmp(const void *a, const void *b)
 uint32_t
 ptr_hash(const void *key)
 {
-	return (uint32_t)key;
+	return (uint32_t)(unsigned long long)key;
 }
 
 int
